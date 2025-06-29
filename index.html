@@ -72,6 +72,9 @@ const MechanicsQuestionBank = () => {
     }
   ];
 
+  const [selectedTopic, setSelectedTopic] = useState('');
+  const [selectedDifficulty, setSelectedDifficulty] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState('');
   const [showResult, setShowResult] = useState(false);
@@ -138,6 +141,14 @@ const MechanicsQuestionBank = () => {
     return { answered, correct, accuracy, topicStats };
   };
 
+      const filteredQuestions = questionBank.filter(q =>
+  (q.question.includes(searchTerm) ||
+   q.topic.includes(searchTerm) ||
+   q.explanation.includes(searchTerm)) &&
+  (selectedTopic === '' || q.topic === selectedTopic) &&
+  (selectedDifficulty === '' || q.difficulty === selectedDifficulty)
+);
+      
   const currentQ = questionBank[currentQuestion];
 
   if (showTips) {
@@ -250,6 +261,28 @@ const MechanicsQuestionBank = () => {
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
           <div className="flex items-center gap-3">
+            <div className="mb-4">
+  <input
+    type="text"
+    placeholder="搜尋關鍵字"
+    value={searchTerm}
+    onChange={e => setSearchTerm(e.target.value)}
+    className="border rounded px-3 py-2 w-full"
+  />
+</div>
+            <select onChange={e => setSelectedTopic(e.target.value)}>
+  <option value="">全部主題</option>
+  <option value="力學基礎">力學基礎</option>
+  <option value="動量守恆">動量守恆</option>
+  <option value="圓周運動">圓周運動</option>
+</select>
+<select onChange={e => setSelectedDifficulty(e.target.value)}>
+  <option value="">全部難度</option>
+  <option value="容易">容易</option>
+  <option value="中等">中等</option>
+  <option value="困難">困難</option>
+</select>
+            
             <BookOpen className="w-8 h-8 text-blue-600" />
             <h1 className="text-3xl font-bold text-gray-800">DSE物理力學題庫</h1>
           </div>
@@ -300,13 +333,14 @@ const MechanicsQuestionBank = () => {
             <span className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full">
               {currentQ.topic}
             </span>
-            <span className={`px-3 py-1 rounded-full ${
-              currentQ.difficulty === '容易' ? 'bg-green-100 text-green-800' :
-              currentQ.difficulty === '中等' ? 'bg-yellow-100 text-yellow-800' :
-              'bg-red-100 text-red-800'
-            }`}>
-              {currentQ.difficulty}
-            </span>
+            <span>
+  {'★'.repeat(
+    currentQ.difficulty === '容易' ? 1 : currentQ.difficulty === '中等' ? 2 : 3
+  )}
+  {'☆'.repeat(
+    3 - (currentQ.difficulty === '容易' ? 1 : currentQ.difficulty === '中等' ? 2 : 3)
+  )}
+</span>
           </div>
         </div>
 
