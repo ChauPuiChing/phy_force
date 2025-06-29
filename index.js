@@ -1,3 +1,4 @@
+import MechanicsQuestionBank from './MechanicsQuestionBank';
 import React, { useState, useEffect } from 'react';
 import { ChevronRight, ChevronLeft, RotateCcw, BookOpen, TrendingUp, Target, CheckCircle, XCircle, BarChart3, Lightbulb } from 'lucide-react';
 
